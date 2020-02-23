@@ -32,7 +32,25 @@ print(matrix3.shape)
 print_vector(matrix3)
 
 
-def prod_matrix(matrix1, matrix2, matrix3):
+def prod2_matrix(matrix1, matrix2):
+    shape1 = matrix1.shape
+    shape2 = matrix2.shape
+
+    if (shape1[1] != shape2[0]):
+        return np.array([])
+
+    out_matrix = np.zeros((shape1[0], shape2[1]))
+
+    for i in range(shape1[0]):
+        for j in range(shape2[1]):
+            curr_cell = 0
+            for t in range(shape1[1]):
+                curr_cell += matrix1[i, t] * matrix2[t, j]
+                out_matrix[i, j] = curr_cell
+
+    return out_matrix
+
+def prod3_matrix(matrix1, matrix2, matrix3):
     shape1 = matrix1.shape
     shape2 = matrix2.shape
     shape3 = matrix3.shape
@@ -40,26 +58,10 @@ def prod_matrix(matrix1, matrix2, matrix3):
     if (shape1[1] != shape2[0]) or (shape2[1] != shape3[0]):
         return np.array([])
     else:
-        out_matrix = np.zeros((shape1[0], shape2[1]))
-
-        for i in range(shape1[0]):
-            for j in range(shape2[1]):
-                curr_cell = 0
-                for t in range(shape1[1]):
-                    curr_cell += matrix1[i, t] * matrix2[t, j]
-                    out_matrix[i, j] = curr_cell
-
-        out_matrix2 = np.zeros((shape1[0], shape3[1]))
-
-        for i in range(shape1[0]):
-          for j in range(shape3[1]):
-            curr_cell = 0
-            for t in range(shape2[1]):
-                curr_cell += out_matrix[i, t] * matrix3[t, j]
-                out_matrix2[i, j] = curr_cell
-    #return out_matrix
+        out_matrix = prod2_matrix(matrix1, matrix2)
+        out_matrix2 = prod2_matrix(out_matrix,matrix3)
     return out_matrix2
 
 print()
-out_matrix2 = prod_matrix(matrix1, matrix2, matrix3)
+out_matrix2 = prod3_matrix(matrix1, matrix2, matrix3)
 print_vector(out_matrix2)
